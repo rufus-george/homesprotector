@@ -8,7 +8,7 @@ A high-converting, mobile-responsive landing page designed for **Homes Protector
 
 This repository is designed to be hosted directly on **GitHub Pages**.
 
-- **URL:** `https://<your-username>.github.io/homesprotector/`
+- **URL:** `https://<rufus-george>.github.io/homesprotector/`
 
 ---
 
