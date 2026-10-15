@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Enter your ZIP code to request a free home improvement estimate for roofing, windows, siding, kitchen and bathroom remodeling, flooring, and HVAC with Homes Protector.">
+<title>Homes Protector | Home Improvement & Remodeling | Free Estimate</title>
+<link rel="icon" type="image/png" href="logo-mark.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --navy: #1a4a80;        /* logo blue */
+  --navy-deep: #0f2f55;
+  --orange: #f39c1e;      /* logo orange */
+  --orange-deep: #a85f00; /* orange for text on white */
+  --ice: #eef4fa;
+  --white: #ffffff;
+  --ink: #1b2a3a;
+  --muted: #566879;
+  --line: #d8e3ee;
+  --error: #b42318;
+  --head: "Montserrat", "Segoe UI", Arial, sans-serif;
+  --body: "Source Sans 3", "Segoe UI", Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 84px; }
+body {
+  margin: 0;
+  font-family: var(--body);
+  font-size: 17px;
+  color: var(--ink);
+  background: var(--white);
+  line-height: 1.6;
+}
+body.modal-open { overflow: hidden; }
+.container { width: min(1120px, 92%); margin: auto; }
+a { text-decoration: none; }
+h1, h2, h3 { font-family: var(--head); color: var(--navy); margin: 0; }
+:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Header */
+header { background: var(--white); position: sticky; top: 0; z-index: 10; border-bottom: 3px solid var(--orange); }
+nav { min-height: 78px; display: flex; justify-content: space-between; align-items: center; gap: 20px; }
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand img { width: 50px; height: auto; display: block; }
+.brand-name { font-family: var(--head); font-weight: 800; font-size: 20px; color: var(--navy); line-height: 1.1; letter-spacing: .2px; }
+.brand-name small { display: block; font-family: var(--body); font-weight: 600; font-size: 12px; color: var(--muted); letter-spacing: .3px; }
+.nav-links { display: flex; align-items: center; gap: 26px; }
+.nav-links a:not(.btn) { color: var(--navy); font-weight: 700; font-size: 16px; }
+.nav-links a:not(.btn):hover { color: var(--orange-deep); }
+
+.btn {
+  display: inline-block;
+  background: var(--orange);
+  color: var(--navy-deep);
+  font-family: var(--head);
+  font-size: 15px;
+  padding: 14px 24px;
+  border: 0;
+  border-radius: 999px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background .2s;
+}
+.btn:hover { background: #ffb23d; }
+.btn:disabled { opacity: .7; cursor: wait; }
+.btn-navy { background: var(--navy); color: var(--white); }
+.btn-navy:hover { background: var(--navy-deep); }
+
+/* Hero */
+.hero {
+  padding: 70px 0 84px;
+  background:
+    radial-gradient(900px 500px at 8% 0%, #ffffff 0%, transparent 70%),
+    linear-gradient(180deg, var(--ice) 0%, #dfeaf5 100%);
+  position: relative;
+  overflow: hidden;
+}
+.hero-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 50px; align-items: center; }
+.kicker {
+  display: inline-block;
+  background: var(--navy);
+  color: var(--white);
+  font-weight: 700;
+  font-size: 14px;
+  padding: 6px 14px;
+  border-radius: 999px;
+  border-left: 8px solid var(--orange);
+}
+h1 { font-size: clamp(36px, 5vw, 58px); line-height: 1.08; margin: 20px 0 18px; letter-spacing: -1.2px; color: var(--navy-deep); }
+.hero p.lead { color: var(--muted); font-size: 19px; max-width: 540px; margin: 0 0 26px; }
+
+/* ZIP bar */
+.zip-form {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 560px;
+  background: var(--white);
+  border: 2px solid var(--navy);
+  border-radius: 999px;
+  padding: 6px;
+  box-shadow: 0 14px 34px #0f2f5522;
+}
+.zip-form input {
+  flex: 1;
+  min-width: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  font-size: 18px;
+  font-weight: 600;
+  padding: 10px 8px 10px 20px;
+  color: var(--ink);
+}
+.zip-form input:focus { outline: none; }
+.zip-form:focus-within { border-color: var(--orange); box-shadow: 0 0 0 4px #f39c1e44, 0 14px 34px #0f2f5522; }
+.zip-form .btn { padding: 15px 26px; white-space: nowrap; }
+.zip-hint { font-size: 14px; color: var(--muted); margin: 12px 0 0 20px; }
+.zip-error { color: var(--error); font-size: 14px; font-weight: 600; margin: 8px 0 0 20px; }
+.checks { list-style: none; padding: 0; margin: 28px 0 0; display: grid; gap: 10px; }
+.checks li { display: flex; align-items: center; gap: 12px; font-weight: 600; color: var(--navy); }
+.checks li::before, .about-copy li::before {
+  content: "";
+  width: 22px; height: 22px; flex: none;
+  border-radius: 50%;
+  background: var(--orange) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230f2f55' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 12.5l4 4 8-9'/%3E%3C/svg%3E") center/14px no-repeat;
+}
+
+/* Hero shield photo */
+.shield { position: relative; width: min(400px, 100%); aspect-ratio: 5 / 6; margin: auto; }
+.shield > div { position: absolute; clip-path: polygon(50% 0, 100% 11%, 100% 55%, 50% 100%, 0 55%, 0 11%); }
+.shield .s-navy { inset: 0; background: var(--navy); }
+.shield .s-orange { inset: 12px 12px 14px; background: var(--orange); }
+.shield .s-photo {
+  inset: 22px 22px 26px;
+  background: url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=85") center/cover;
+}
+
+/* Sections */
+section { padding: 84px 0; }
+.section-heading { text-align: center; max-width: 680px; margin: 0 auto 44px; }
+h2 { font-size: clamp(28px, 4vw, 38px); line-height: 1.2; }
+.section-heading p { color: var(--muted); margin: 12px 0 0; }
+.section-heading h2::after { content: ""; display: block; width: 64px; height: 5px; background: var(--orange); border-radius: 3px; margin: 16px auto 0; }
+
+/* Services */
+.service-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+.service {
+  padding: 26px 22px 22px;
+  background: var(--ice);
+  border-radius: 16px 16px 16px 4px;
+  border-bottom: 4px solid var(--navy);
+  display: flex;
+  flex-direction: column;
+  transition: border-color .2s, background .2s;
+}
+.service:hover { border-bottom-color: var(--orange); background: #e6eff8; }
+.service-icon { width: 52px; height: 52px; border-radius: 14px; background: var(--navy); display: grid; place-items: center; margin-bottom: 16px; }
+.service-icon svg { width: 28px; height: 28px; stroke: var(--orange); fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.service h3 { font-size: 18px; margin-bottom: 8px; }
+.service p { color: var(--muted); font-size: 15px; margin: 0 0 14px; flex: 1; }
+.link-btn {
+  align-self: flex-start;
+  background: none; border: 0; padding: 0 0 1px;
+  font: inherit; font-size: 15px; font-weight: 700;
+  color: var(--navy);
+  border-bottom: 2px solid var(--orange);
+  cursor: pointer;
+}
+.link-btn:hover { color: var(--orange-deep); }
+
+/* About */
+.about { background: var(--ice); }
+.about-grid { display: grid; grid-template-columns: .9fr 1.1fr; gap: 64px; align-items: center; }
+.about-image {
+  min-height: 380px;
+  border-radius: 20px;
+  background: url("https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=85") center/cover;
+  box-shadow: 14px 14px 0 var(--orange);
+  margin: 0 14px 14px 0;
+}
+.about-copy p { color: var(--muted); }
+.about-copy ul { padding: 0; margin: 20px 0 28px; list-style: none; display: grid; gap: 12px; }
+.about-copy li { display: flex; gap: 12px; align-items: flex-start; font-weight: 600; color: var(--navy); }
+.about-copy li::before { margin-top: 3px; }
+
+/* Process */
+.process { background: var(--navy); color: var(--white); }
+.process h2 { color: var(--white); }
+.process .section-heading p { color: #c9d9ea; }
+.process-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; counter-reset: step; }
+.step { position: relative; padding-top: 70px; }
+.step::before {
+  counter-increment: step;
+  content: counter(step);
+  position: absolute; top: 0; left: 0;
+  width: 52px; height: 52px; border-radius: 50%;
+  background: var(--orange); color: var(--navy-deep);
+  font-family: var(--head); font-weight: 800; font-size: 22px;
+  display: grid; place-items: center;
+}
+.step:not(:last-child)::after { content: ""; position: absolute; top: 25px; left: 66px; right: -12px; border-top: 3px dotted #ffffff55; }
+.step h3 { color: var(--white); font-size: 20px; margin-bottom: 8px; }
+.step p { color: #c9d9ea; margin: 0; }
+
+/* CTA */
+.cta { background: var(--orange); text-align: center; padding: 70px 0; }
+.cta h2 { color: var(--navy-deep); }
+.cta p.lead { color: #3a2a08; font-size: 19px; margin: 10px 0 26px; }
+.cta .zip-form { margin: auto; border-color: var(--navy-deep); }
+.cta .zip-form .btn { background: var(--navy); color: var(--white); }
+.cta .zip-form .btn:hover { background: var(--navy-deep); }
+.cta .zip-hint { margin-left: 0; color: #3a2a08; }
+.cta .zip-error { margin-left: 0; color: #7a1a10; }
+
+/* FAQ */
+.faq-list { max-width: 800px; margin: auto; display: grid; gap: 12px; }
+details { background: var(--ice); border-radius: 12px; padding: 18px 22px; border-left: 6px solid var(--navy); }
+details[open] { border-left-color: var(--orange); }
+summary { font-weight: 700; cursor: pointer; color: var(--navy); font-family: var(--head); font-size: 16px; }
+details p { color: var(--muted); margin: 10px 0 0; }
+
+/* Footer */
+footer { background: var(--navy-deep); color: var(--white); padding: 56px 0 22px; border-top: 6px solid var(--orange); }
+.footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 36px; }
+.footer-brand img { width: 56px; background: var(--white); border-radius: 50%; padding: 6px; }
+.footer-brand .brand-name { color: var(--white); font-size: 22px; }
+.footer-brand .brand-name small { color: var(--orange); }
+footer p, footer a { color: #c3d3e4; }
+footer p { margin: 10px 0 0; }
+footer h3 { color: var(--white); font-size: 17px; margin-bottom: 12px; }
+footer .links p { margin: 6px 0; }
+footer a:hover { color: var(--orange); }
+.footer-bottom { border-top: 1px solid #ffffff25; padding-top: 18px; margin-top: 34px; font-size: 14px; color: #9db3c8; }
+.mobile-bar { display: none; }
+
+/* Modal */
+dialog.modal {
+  border: 0;
+  padding: 0;
+  border-radius: 20px;
+  width: min(700px, 94vw);
+  max-height: 92vh;
+  background: var(--white);
+  color: var(--ink);
+  overflow: hidden;
+  box-shadow: 0 30px 80px #0f2f5577;
+}
+dialog.modal[open] { animation: pop .22s ease-out; }
+dialog.modal::backdrop { background: #0f2f55b8; backdrop-filter: blur(3px); }
+@keyframes pop { from { opacity: 0; transform: translateY(14px) scale(.98); } to { opacity: 1; transform: none; } }
+.modal-card { max-height: 92vh; overflow-y: auto; border-top: 8px solid var(--navy); padding: 28px 30px 30px; }
+.modal-close {
+  position: absolute; top: 18px; right: 16px; z-index: 2;
+  width: 40px; height: 40px; border-radius: 50%;
+  border: 0; background: var(--ice); color: var(--navy);
+  font-size: 26px; line-height: 1; cursor: pointer;
+}
+.modal-close:hover { background: var(--orange); color: var(--navy-deep); }
+.modal-head { display: flex; align-items: center; gap: 14px; padding-right: 44px; margin-bottom: 6px; }
+.modal-head img { width: 48px; height: auto; flex: none; }
+.modal-head h2 { font-size: 24px; line-height: 1.2; }
+.modal-sub { color: var(--muted); font-size: 15px; margin: 4px 0 20px; }
+.modal-section { grid-column: 1 / -1; font-family: var(--head); font-weight: 700; font-size: 15px; color: var(--navy); padding-bottom: 6px; border-bottom: 2px solid var(--orange); margin-top: 8px; }
+.pick-note { grid-column: 1 / -1; margin: 0; background: var(--ice); border-left: 6px solid var(--orange); border-radius: 10px; padding: 12px 16px; color: var(--navy); font-weight: 600; font-size: 15px; }
+.pick-note[hidden] { display: none; }
+
+form.lead { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+#dynFields { display: contents; }
+.field { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.full { grid-column: 1 / -1; }
+label, legend { font-size: 14px; font-weight: 700; color: var(--navy); }
+fieldset { border: 0; padding: 0; margin: 0; min-width: 0; }
+legend { padding: 0; margin-bottom: 8px; }
+input[type=text], input[type=tel], input[type=email], select, textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1.5px solid var(--line);
+  border-radius: 10px;
+  background: #fbfdff;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+}
+textarea { min-height: 84px; resize: vertical; }
+input:focus, select:focus, textarea:focus { outline: 3px solid #f39c1e55; border-color: var(--orange); }
+.pills { display: flex; flex-wrap: wrap; gap: 8px; }
+.pill { position: relative; }
+.pill input { position: absolute; inset: 0; width: 100%; height: 100%; margin: 0; opacity: 0; cursor: pointer; }
+.pill span { display: block; padding: 9px 16px; border: 1.5px solid var(--line); border-radius: 999px; background: #fbfdff; font-weight: 600; font-size: 15px; color: var(--navy); transition: background .15s, color .15s, border-color .15s; }
+.pill:hover span { border-color: var(--navy); }
+.pill input:checked + span { background: var(--navy); border-color: var(--navy); color: var(--white); }
+.pill input:focus-visible + span { outline: 3px solid var(--orange); outline-offset: 2px; }
+.err { color: var(--error); font-size: 14px; font-weight: 600; margin: 8px 0 0; }
+.err[hidden] { display: none; }
+.consent { display: flex; align-items: flex-start; gap: 8px; font-weight: 400; color: var(--muted); }
+.consent input { width: 18px; margin-top: 4px; accent-color: var(--navy); }
+form.lead button[type=submit] { grid-column: 1 / -1; width: 100%; font-size: 16px; padding: 16px; }
+.form-error { grid-column: 1 / -1; margin: 0; background: #fdecea; color: var(--error); border-left: 6px solid var(--error); border-radius: 10px; padding: 12px 16px; font-weight: 600; font-size: 15px; }
+.form-error[hidden] { display: none; }
+.note { grid-column: 1 / -1; font-size: 12px; color: var(--muted); text-align: center; margin: 0; }
+.note a { color: var(--navy); font-weight: 700; text-decoration: underline; }
+
+@media (max-width: 900px) {
+  .hero-grid, .about-grid { grid-template-columns: 1fr; }
+  .hero .shield { display: none; }
+  .service-grid { grid-template-columns: repeat(2, 1fr); }
+  .nav-links { gap: 12px; }
+  .nav-links a:not(.btn) { display: none; }
+  .process-grid { grid-template-columns: 1fr; gap: 32px; }
+  .step:not(:last-child)::after { display: none; }
+  .about-grid { gap: 40px; }
+}
+@media (max-width: 560px) {
+  body { font-size: 16px; }
+  nav { min-height: 66px; }
+  .brand img { width: 40px; }
+  .brand-name { font-size: 16px; }
+  .brand-name small { display: none; }
+  .nav-links .btn { padding: 10px 14px; font-size: 13px; }
+  .hero { padding: 44px 0 54px; }
+  .zip-form { flex-direction: column; border-radius: 22px; padding: 10px; gap: 6px; }
+  .zip-form input { width: 100%; text-align: center; padding: 10px; }
+  .zip-form .btn { width: 100%; }
+  .zip-hint, .zip-error { margin-left: 0; text-align: center; }
+  section { padding: 56px 0; }
+  .service-grid { gap: 12px; }
+  .service { padding: 18px 14px; }
+  .service h3 { font-size: 16px; }
+  .service p { font-size: 14px; }
+  .about-image { min-height: 260px; }
+  .footer-grid { grid-template-columns: 1fr; }
+  .modal-card { padding: 22px 16px 24px; }
+  .modal-head h2 { font-size: 20px; }
+  .modal-head img { width: 40px; }
+  form.lead { grid-template-columns: 1fr; }
+  .mobile-bar { display: block; position: fixed; bottom: 0; left: 0; right: 0; padding: 10px; background: var(--white); box-shadow: 0 -3px 15px #0002; z-index: 9; }
+  .mobile-bar a { display: block; text-align: center; }
+  body { padding-bottom: 70px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; }
+  dialog.modal[open] { animation: none; }
+}
+</style>
+</head>
+
+<body>
+<header>
+  <nav class="container">
+    <a href="#home" class="brand" aria-label="Homes Protector home">
+      <img src="logo-mark.png" alt="Homes Protector shield logo">
+      <div class="brand-name">Homes Protector<small>Home Improvement &amp; Remodeling</small></div>
+    </a>
+    <div class="nav-links">
+      <a href="#services">Services</a>
+      <a href="#about">About</a>
+      <a href="#faq">FAQs</a>
+      <a href="#estimate" class="btn">Free Estimate</a>
+    </div>
+  </nav>
+</header>
+
+<main>
+<section class="hero" id="home">
+  <div class="container hero-grid">
+    <div>
+      <span class="kicker">Improve your home. Improve your life.</span>
+      <h1>Your home. Your vision. Our next project.</h1>
+      <p class="lead">From roofing and windows to kitchens, bathrooms, flooring and HVAC, take the first step toward the home you want with Homes Protector.</p>
+
+      <div id="estimate">
+        <form class="zip-form" data-source="Hero ZIP form" aria-label="Start your free estimate">
+          <label class="sr-only" for="heroZip">Your ZIP code</label>
+          <input id="heroZip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="Enter your ZIP code" title="Enter a 5-digit US ZIP code" required>
+          <button class="btn" type="submit">Get my free estimate</button>
+        </form>
+        <p class="zip-hint">Free estimate request. It takes about a minute.</p>
+      </div>
+
+      <ul class="checks">
+        <li>Free estimate request</li>
+        <li>Multiple home services</li>
+        <li>Convenient project inquiry</li>
+      </ul>
+    </div>
+
+    <div class="shield" role="img" aria-label="Bright, finished home exterior">
+      <div class="s-navy"></div>
+      <div class="s-orange"></div>
+      <div class="s-photo"></div>
+    </div>
+  </div>
+</section>
+
+<section class="services" id="services">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Home Improvement Services</h2>
+      <p>Pick the service you're interested in and answer a few quick questions to request an estimate.</p>
+    </div>
+
+    <div class="service-grid">
+      <article class="service">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M3 12l9-8 9 8"/><path d="M5.5 10.5V20h13v-9.5"/><path d="M10 20v-5h4v5"/></svg></div>
+        <h3>Roofing</h3>
+        <p>Explore roof repairs, replacement options and protection for your home.</p>
+        <button type="button" class="link-btn" data-service="Roofing">Request estimate</button>
+      </article>
+      <article class="service">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="1.5"/><path d="M12 3v18M4 12h16"/></svg></div>
+        <h3>Windows &amp; Doors</h3>
+        <p>Refresh your home with updated windows, doors, comfort and natural light.</p>
+        <button type="button" class="link-btn" data-service="Windows and Doors">Request estimate</button>
+      </article>
+      <article class="service">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M3 6h18M3 10.5h18M3 15h18M3 19.5h18"/></svg></div>
+        <h3>Siding</h3>
+        <p>Explore siding styles to refresh your home's exterior and curb appeal.</p>
+        <button type="button" class="link-btn" data-service="Siding">Request estimate</button>
+      </article>
+      <article class="service">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M4 9h16"/><circle cx="8" cy="6" r=".6"/><circle cx="12" cy="6" r=".6"/><rect x="8" y="12" width="8" height="6" rx="1"/></svg></div>
+        <h3>Kitchen Remodeling</h3>
+        <p>Plan an updated kitchen with improved finishes, storage and layout.</p>
+        <button type="button" class="link-btn" data-service="Kitchen Remodeling">Request estimate</button>
+      </article>
+      <article class="service">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M3 12h18v2.5a4.5 4.5 0 0 1-4.5 4.5h-9A4.5 4.5 0 0 1 3 14.5z"/><path d="M6 12V6.5a2.5 2.5 0 0 1 5 0"/><path d="M7 19l-1 2M17 19l1 2"/></svg></div>
+        <h3>Bathroom Remodeling</h3>
+        <p>Consider new fixtures, finishes and a more practical bathroom layout.</p>
+        <button type="button" class="link-btn" data-service="Bathroom Remodeling">Request estimate</button>
+      </article>
+      <article class="service">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="1.5"/><path d="M3 9h18M3 15h18M9 3v6M15 9v6M9 15v6"/></svg></div>
+        <h3>Flooring</h3>
+        <p>Compare flooring options for the rooms and lifestyle in your home.</p>
+        <button type="button" class="link-btn" data-service="Flooring">Request estimate</button>
+      </article>
+      <article class="service">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M5.6 5.6l12.8 12.8M18.4 5.6L5.6 18.4"/></svg></div>
+        <h3>HVAC</h3>
+        <p>Discuss heating and cooling options for year-round indoor comfort.</p>
+        <button type="button" class="link-btn" data-service="HVAC - Heating and Air Conditioning">Request estimate</button>
+      </article>
+      <article class="service">
+        <div class="service-icon"><svg viewBox="0 0 24 24"><path d="M12 3l9 5-9 5-9-5z"/><path d="M3 12.5l9 5 9-5"/><path d="M3 17l9 5 9-5"/></svg></div>
+        <h3>Multiple Projects</h3>
+        <p>Planning several improvements? Tell us what you want to accomplish.</p>
+        <button type="button" class="link-btn" data-service="Multiple Services">Get started</button>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="container about-grid">
+    <div class="about-image" role="img" aria-label="Bright modern home interior"></div>
+    <div class="about-copy">
+      <h2>Let's Plan Your Next Home Project</h2>
+      <p>Every home is different. Start by sharing your goals, location and preferred timeline so the right next steps can be discussed.</p>
+      <ul>
+        <li>Tell us which home service you need.</li>
+        <li>Share your project ZIP code and timeline.</li>
+        <li>Discuss the scope and questions before making a decision.</li>
+      </ul>
+      <a class="btn btn-navy" href="#estimate">Request an estimate</a>
+    </div>
+  </div>
+</section>
+
+<section class="process">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Three Simple Steps</h2>
+      <p>Start your home improvement inquiry in just a few minutes.</p>
+    </div>
+    <div class="process-grid">
+      <div class="step">
+        <h3>Submit Your Request</h3>
+        <p>Enter your ZIP code, then complete the short form with your contact details and project information.</p>
+      </div>
+      <div class="step">
+        <h3>Discuss Your Needs</h3>
+        <p>Share more details and confirm service availability for your ZIP code.</p>
+      </div>
+      <div class="step">
+        <h3>Review Your Options</h3>
+        <p>Discuss the project scope and review an estimate before authorizing work.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="container">
+    <h2>Ready to Improve Your Home?</h2>
+    <p class="lead">Enter your ZIP code to request a free estimate.</p>
+    <form class="zip-form" data-source="Bottom ZIP form" aria-label="Start your free estimate">
+      <label class="sr-only" for="ctaZip">Your ZIP code</label>
+      <input id="ctaZip" type="text" inputmode="numeric" pattern="[0-9]{5}" maxlength="5" autocomplete="postal-code" placeholder="Enter your ZIP code" title="Enter a 5-digit US ZIP code" required>
+      <button class="btn" type="submit">Get my free estimate</button>
+    </form>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Frequently Asked Questions</h2>
+    </div>
+    <div class="faq-list">
+      <details>
+        <summary>Is the estimate request free?</summary>
+        <p>The form is for requesting a free estimate. Confirm any inspection or project-specific charges before scheduling.</p>
+      </details>
+      <details>
+        <summary>Which ZIP codes do you serve?</summary>
+        <p>Service availability depends on the business. Submit your ZIP code so the team can confirm whether your location is covered.</p>
+      </details>
+      <details>
+        <summary>Can I request multiple services?</summary>
+        <p>Yes. Choose Multiple Projects, select every service you need and describe your plans in the project details field.</p>
+      </details>
+      <details>
+        <summary>Am I required to hire the company?</summary>
+        <p>No. Submitting an inquiry does not commit you to purchasing services. Review any proposal or contract before authorizing work.</p>
+      </details>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <a href="#home" class="brand footer-brand" aria-label="Homes Protector home">
+          <img src="logo-mark.png" alt="Homes Protector shield logo">
+          <div class="brand-name">Homes Protector<small>Home Improvement &amp; Remodeling</small></div>
+        </a>
+        <p>Start planning your next home improvement or remodeling project with confidence.</p>
+      </div>
+      <div class="links">
+        <h3>Services</h3>
+        <p><a href="#services">Roofing</a></p>
+        <p><a href="#services">Windows &amp; Siding</a></p>
+        <p><a href="#services">Kitchen &amp; Bathroom</a></p>
+        <p><a href="#services">Flooring &amp; HVAC</a></p>
+      </div>
+      <div class="links">
+        <h3>Quick Links</h3>
+        <p><a href="#home">Home</a></p>
+        <p><a href="#services">Our Services</a></p>
+        <p><a href="#about">About Us</a></p>
+        <p><a href="#estimate">Request an Estimate</a></p>
+        <p><a href="privacy.html">Privacy Policy</a></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      © <span id="year"></span> Homes Protector. All rights reserved.
+    </div>
+  </div>
+</footer>
+
+<div class="mobile-bar">
+  <a class="btn" href="#estimate">Free estimate</a>
+</div>
+
+<!-- Estimate pop-up (used by the ZIP forms and every service button) -->
+<dialog class="modal" id="estimateModal" aria-labelledby="mTitle">
+  <button type="button" class="modal-close" id="mClose" aria-label="Close form">&times;</button>
+  <div class="modal-card">
+    <div class="modal-head">
+      <img src="logo-mark.png" alt="">
+      <h2 id="mTitle">Get a Free Estimate</h2>
+    </div>
+    <p class="modal-sub" id="mSub">Tell us about your project. Our team can follow up to discuss the next step.</p>
+
+    <form class="lead" id="leadForm" action="https://formspree.io/f/xoejpjen" method="POST">
+      <input type="hidden" name="_subject" id="fSubject" value="New Home Improvement Lead - Homes Protector">
+      <input type="hidden" name="form_source" id="fSource" value="Website">
+      <input type="text" name="_gotcha" style="display:none" tabindex="-1" autocomplete="off">
+
+      <div class="field full">
+        <label for="service">Select a Service *</label>
+        <select id="service" name="service" required>
+          <option value="" selected disabled>Choose your project</option>
+          <option>Roofing</option>
+          <option>Windows and Doors</option>
+          <option>Siding</option>
+          <option>Kitchen Remodeling</option>
+          <option>Bathroom Remodeling</option>
+          <option>Flooring</option>
+          <option>HVAC - Heating and Air Conditioning</option>
+          <option>Multiple Services</option>
+        </select>
+      </div>
+
+      <p class="pick-note" id="pickNote">Choose a service above and we'll show the questions that matter for your project.</p>
+      <div id="dynFields"></div>
+
+      <div class="modal-section">Your contact details</div>
+      <div class="field">
+        <label for="name">Full Name *</label>
+        <input id="name" name="name" type="text" autocomplete="name" required placeholder="Your full name">
+      </div>
+      <div class="field">
+        <label for="phone">Phone Number *</label>
+        <input id="phone" name="phone" type="tel" autocomplete="tel" required placeholder="Your phone number">
+      </div>
+      <div class="field full">
+        <label for="email">Email Address *</label>
+        <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+      </div>
+      <div class="field">
+        <label for="zip">US ZIP Code *</label>
+        <input id="zip" name="zip_code" type="text" inputmode="numeric" pattern="[0-9]{5}(-[0-9]{4})?" autocomplete="postal-code" required placeholder="12345">
+      </div>
+      <div class="field">
+        <label for="timeline">Project Timeline</label>
+        <select id="timeline" name="timeline">
+          <option>As soon as possible</option>
+          <option>Within 30 days</option>
+          <option>1–3 months</option>
+          <option>Just researching</option>
+        </select>
+      </div>
+      <fieldset class="field full">
+        <legend>Do you own this home? *</legend>
+        <div class="pills">
+          <label class="pill"><input type="radio" name="home_owner" value="Yes" required><span>Yes</span></label>
+          <label class="pill"><input type="radio" name="home_owner" value="No"><span>No</span></label>
+        </div>
+      </fieldset>
+      <div class="field full">
+        <label for="details">Project Details</label>
+        <textarea id="details" name="project_details" placeholder="Anything else we should know? (optional)"></textarea>
+      </div>
+      <div class="field full">
+        <label class="consent">
+          <input type="checkbox" name="contact_consent" value="Agreed" required>
+          <span>I agree to be contacted about my estimate request. Consent is not a condition of purchase.</span>
+        </label>
+      </div>
+      <p class="form-error" id="formError" role="alert" hidden></p>
+      <button class="btn" type="submit" id="submitBtn">Request my free estimate</button>
+      <p class="note">Please do not include sensitive information. See our <a href="privacy.html">Privacy Policy</a>.</p>
+    </form>
+  </div>
+</dialog>
+
+<script>
+document.getElementById("year").textContent = new Date().getFullYear();
+
+/* ---------- Service-specific questions (edit here to change the forms) ---------- */
+var SELECT = function (k, label, opts, req) { return { t: "select", k: k, label: label, opts: opts, req: req }; };
+var RADIO  = function (k, label, opts, req) { return { t: "radio",  k: k, label: label, opts: opts, req: req }; };
+var CHECK  = function (k, label, opts, req) { return { t: "check",  k: k, label: label, opts: opts, req: req }; };
+
+var STORIES = ["1 story", "2 stories", "3 or more stories"];
+
+var SERVICES = {
+  "Roofing": { name: "Roofing", fields: [
+    RADIO("roofing_need", "What do you need? *", ["Repair", "Full replacement", "New roof installation", "Inspection only"], true),
+    SELECT("roof_material", "Roofing material", ["Asphalt shingles", "Metal", "Tile", "Flat roof (TPO / EPDM)", "Not sure"]),
+    SELECT("roof_size", "Approximate roof size", ["Under 1,500 sq ft", "1,500–2,500 sq ft", "2,500–3,500 sq ft", "Over 3,500 sq ft", "Not sure"]),
+    SELECT("property_type", "Property type", ["Single-family home", "Townhome / Condo", "Multi-family", "Other"], true),
+    SELECT("stories", "Number of stories", STORIES),
+    CHECK("roof_issues", "Current issues", ["Leaks", "Storm or hail damage", "Missing shingles", "Old roof", "Sagging", "None, planning ahead"]),
+    RADIO("insurance_claim", "Is this for an insurance claim?", ["Yes", "No", "Not sure"])
+  ]},
+  "Windows and Doors": { name: "Windows & Doors", fields: [
+    CHECK("wd_items", "What are you replacing or adding? *", ["Windows", "Entry door", "Patio / sliding door", "Garage door"], true),
+    SELECT("wd_quantity", "How many windows or doors?", ["1–3", "4–8", "9–15", "16 or more"], true),
+    SELECT("wd_material", "Preferred material", ["Vinyl", "Wood", "Fiberglass", "Aluminum", "Not sure"]),
+    RADIO("wd_project", "Project type *", ["Replacement", "New construction / addition"], true),
+    SELECT("stories", "Number of stories", STORIES),
+    CHECK("wd_priorities", "What matters most?", ["Energy savings", "Storm / impact protection", "Noise reduction", "Security", "Appearance"])
+  ]},
+  "Siding": { name: "Siding", fields: [
+    RADIO("siding_project", "Project type *", ["Full replacement", "Partial replacement", "Repair", "New construction"], true),
+    SELECT("siding_material", "Siding material", ["Vinyl", "Fiber cement", "Wood", "Metal", "Stucco / stone veneer", "Not sure"]),
+    SELECT("home_size", "Approximate home size", ["Under 1,500 sq ft", "1,500–2,500 sq ft", "2,500–3,500 sq ft", "Over 3,500 sq ft", "Not sure"], true),
+    SELECT("stories", "Number of stories", STORIES),
+    CHECK("siding_extras", "Also interested in", ["Insulation", "Trim & soffit", "Gutters", "Color consultation"])
+  ]},
+  "Kitchen Remodeling": { name: "Kitchen Remodeling", fields: [
+    CHECK("kitchen_scope", "What would you like to update? *", ["Full remodel", "Cabinets", "Countertops", "Layout change", "Appliances", "Flooring & backsplash"], true),
+    SELECT("kitchen_size", "Kitchen size", ["Small (under 100 sq ft)", "Medium (100–200 sq ft)", "Large (over 200 sq ft)", "Not sure"], true),
+    SELECT("kitchen_cabinets", "Cabinets", ["Replace", "Reface", "Keep existing", "Not sure"]),
+    SELECT("kitchen_countertops", "Countertop material", ["Quartz", "Granite", "Butcher block", "Laminate", "Not sure"]),
+    SELECT("kitchen_budget", "Estimated budget", ["Under $10,000", "$10,000–$25,000", "$25,000–$50,000", "$50,000+", "Not sure"])
+  ]},
+  "Bathroom Remodeling": { name: "Bathroom Remodeling", fields: [
+    CHECK("bath_scope", "What would you like to update? *", ["Full remodel", "Tub to shower conversion", "Shower replacement", "Vanity & fixtures", "Walk-in tub / accessibility", "Tile & flooring"], true),
+    SELECT("bath_count", "Number of bathrooms", ["1", "2", "3 or more"], true),
+    SELECT("bath_size", "Bathroom size", ["Small (under 40 sq ft)", "Medium (40–80 sq ft)", "Large (over 80 sq ft)", "Not sure"]),
+    SELECT("bath_budget", "Estimated budget", ["Under $5,000", "$5,000–$15,000", "$15,000–$30,000", "$30,000+", "Not sure"])
+  ]},
+  "Flooring": { name: "Flooring", fields: [
+    CHECK("floor_type", "Flooring type *", ["Hardwood", "Laminate", "Vinyl plank", "Tile", "Carpet", "Not sure"], true),
+    CHECK("floor_rooms", "Which rooms? *", ["Living room", "Kitchen", "Bedrooms", "Bathrooms", "Basement", "Whole home"], true),
+    SELECT("floor_area", "Approximate area", ["Under 300 sq ft", "300–700 sq ft", "700–1,500 sq ft", "Over 1,500 sq ft", "Not sure"], true),
+    SELECT("floor_service", "Service needed", ["Installation only", "Supply & install"]),
+    RADIO("floor_removal", "Do old floors need to be removed?", ["Yes", "No", "Not sure"])
+  ]},
+  "HVAC - Heating and Air Conditioning": { name: "HVAC", fields: [
+    RADIO("hvac_need", "What do you need? *", ["Installation", "Replacement", "Repair", "Maintenance / tune-up"], true),
+    SELECT("hvac_system", "System type", ["Central air conditioning", "Furnace", "Heat pump", "Ductless mini-split", "Full heating & cooling system", "Not sure"], true),
+    SELECT("hvac_home_size", "Home size", ["Under 1,000 sq ft", "1,000–2,000 sq ft", "2,000–3,000 sq ft", "Over 3,000 sq ft"]),
+    SELECT("hvac_age", "Age of current system", ["0–5 years", "6–10 years", "11–15 years", "Over 15 years", "No system yet", "Not sure"]),
+    RADIO("hvac_urgency", "How urgent is it? *", ["No heat or cooling right now", "Within a week", "Planning ahead"], true)
+  ]},
+  "Multiple Services": { name: "Multiple Projects", fields: [
+    CHECK("multi_services", "Which services do you need? *", ["Roofing", "Windows & Doors", "Siding", "Kitchen Remodeling", "Bathroom Remodeling", "Flooring", "HVAC", "Other"], true),
+    SELECT("multi_budget", "Estimated total budget", ["Under $10,000", "$10,000–$25,000", "$25,000–$50,000", "$50,000–$100,000", "$100,000+", "Not sure"]),
+    SELECT("multi_property", "Property type", ["Single-family home", "Townhome / Condo", "Multi-family", "Other"]),
+    RADIO("multi_coordination", "How would you like to handle it?", ["One coordinated project", "Separate quotes are fine", "Not sure"])
+  ]}
+};
+
+/* ---------- Pop-up logic ---------- */
+var modal = document.getElementById("estimateModal");
+var leadForm = document.getElementById("leadForm");
+var serviceSel = document.getElementById("service");
+var dyn = document.getElementById("dynFields");
+var pickNote = document.getElementById("pickNote");
+var submitBtn = document.getElementById("submitBtn");
+
+function esc(s) {
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+}
+
+function fieldHTML(f) {
+  var id = "f_" + f.k;
+  var req = f.req ? " required" : "";
+  var i, html = "";
+  if (f.t === "select") {
+    var selLabel = f.req ? f.label + " *" : f.label;
+    html = '<div class="field"><label for="' + id + '">' + esc(selLabel) + '</label><select id="' + id + '" name="' + f.k + '"' + req + '><option value="" selected disabled>Select</option>';
+    for (i = 0; i < f.opts.length; i++) html += "<option>" + esc(f.opts[i]) + "</option>";
+    return html + "</select></div>";
+  }
+  if (f.t === "radio") {
+    html = '<fieldset class="field full"><legend>' + esc(f.label) + '</legend><div class="pills">';
+    for (i = 0; i < f.opts.length; i++) {
+      html += '<label class="pill"><input type="radio" name="' + f.k + '" value="' + esc(f.opts[i]) + '"' + req + "><span>" + esc(f.opts[i]) + "</span></label>";
+    }
+    return html + "</div></fieldset>";
+  }
+  html = '<fieldset class="field full" data-group="' + f.k + '"' + (f.req ? ' data-req="1"' : "") + "><legend>" + esc(f.label) + '</legend><div class="pills">';
+  for (i = 0; i < f.opts.length; i++) {
+    html += '<label class="pill"><input type="checkbox" value="' + esc(f.opts[i]) + '"><span>' + esc(f.opts[i]) + "</span></label>";
+  }
+  return html + '</div><input type="hidden" name="' + f.k + '"><p class="err" hidden>Please choose at least one option.</p></fieldset>';
+}
+
+function renderService(value) {
+  var cfg = SERVICES[value];
+  var title = document.getElementById("mTitle");
+  var sub = document.getElementById("mSub");
+  if (cfg) {
+    dyn.innerHTML = cfg.fields.map(fieldHTML).join("");
+    pickNote.hidden = true;
+    title.textContent = "Free " + cfg.name + " Estimate";
+    sub.textContent = "Answer a few quick questions about your " + cfg.name.toLowerCase() + " project so we can follow up with the right details.";
+  } else {
+    dyn.innerHTML = "";
+    pickNote.hidden = false;
+    title.textContent = "Get a Free Estimate";
+    sub.textContent = "Tell us about your project. Our team can follow up to discuss the next step.";
+  }
+}
+
+function openModal(service, zip, source) {
+  leadForm.reset();
+  serviceSel.value = service || "";
+  if (!serviceSel.value) serviceSel.selectedIndex = 0;
+  renderService(service || "");
+  if (zip) document.getElementById("zip").value = zip;
+  document.getElementById("fSource").value = source || "Website";
+  document.getElementById("formError").hidden = true;
+  submitBtn.disabled = false;
+  submitBtn.textContent = "Request my free estimate";
+  document.body.classList.add("modal-open");
+  modal.showModal();
+  modal.querySelector(".modal-card").scrollTop = 0;
+}
+
+serviceSel.addEventListener("change", function () { renderService(serviceSel.value); });
+
+modal.addEventListener("close", function () { document.body.classList.remove("modal-open"); });
+modal.addEventListener("click", function (e) { if (e.target === modal) modal.close(); });
+document.getElementById("mClose").addEventListener("click", function () { modal.close(); });
+
+/* ZIP forms: validate, then open the pop-up */
+document.querySelectorAll(".zip-form").forEach(function (f) {
+  var input = f.querySelector("input");
+  f.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var existing = f.parentNode.querySelector(".zip-error");
+    if (existing) existing.remove();
+    var zip = input.value.trim();
+    if (!/^\d{5}$/.test(zip)) {
+      var p = document.createElement("p");
+      p.className = "zip-error";
+      p.setAttribute("role", "alert");
+      p.textContent = "Please enter a valid 5-digit US ZIP code.";
+      f.after(p);
+      input.focus();
+      return;
+    }
+    openModal("", zip, f.dataset.source);
+  });
+});
+
+/* Service buttons */
+document.querySelectorAll("[data-service]").forEach(function (btn) {
+  btn.addEventListener("click", function () { openModal(btn.dataset.service, "", "Service card: " + btn.dataset.service); });
+});
+
+/* "Free estimate" links jump to the ZIP box and focus it */
+document.querySelectorAll('a[href="#estimate"]').forEach(function (a) {
+  a.addEventListener("click", function () {
+    setTimeout(function () { document.getElementById("heroZip").focus({ preventScroll: true }); }, 450);
+  });
+});
+
+/* Submit: check required checkbox groups, then send to Formspree and open thanks.html */
+leadForm.addEventListener("submit", function (e) {
+  var ok = true, firstBad = null;
+  leadForm.querySelectorAll("fieldset[data-group]").forEach(function (g) {
+    var vals = Array.prototype.map.call(g.querySelectorAll("input[type=checkbox]:checked"), function (c) { return c.value; });
+    g.querySelector("input[type=hidden]").value = vals.join(", ");
+    var bad = g.hasAttribute("data-req") && vals.length === 0;
+    g.querySelector(".err").hidden = !bad;
+    if (bad) { ok = false; if (!firstBad) firstBad = g.querySelector("input[type=checkbox]"); }
+  });
+  if (!ok) { e.preventDefault(); firstBad.focus(); return; }
+  var cfg = SERVICES[serviceSel.value];
+  document.getElementById("fSubject").value = "New " + (cfg ? cfg.name : "Home Improvement") + " Lead - Homes Protector";
+  if (leadForm.elements["_gotcha"].value) { e.preventDefault(); return; }
+  e.preventDefault();
+  var formError = document.getElementById("formError");
+  function showError(msg) {
+    formError.textContent = msg;
+    formError.hidden = false;
+    submitBtn.disabled = false;
+    submitBtn.textContent = "Request my free estimate";
+  }
+  formError.hidden = true;
+  submitBtn.disabled = true;
+  submitBtn.textContent = "Sending...";
+  fetch(leadForm.action, { method: "POST", body: new FormData(leadForm), headers: { "Accept": "application/json" } })
+    .then(function (r) {
+      return r.json().catch(function () { return {}; }).then(function (data) { return { ok: r.ok, data: data }; });
+    })
+    .then(function (res) {
+      if (res.ok) { window.location.href = new URL("thanks.html", window.location.href).href; return; }
+      var msg = res.data && res.data.errors ? res.data.errors.map(function (x) { return x.message; }).join(" ") : "";
+      showError(msg || "Something went wrong. Please try again.");
+    })
+    .catch(function () { showError("We couldn't send your request. Please check your connection and try again."); });
+});
+
+/* Reset the button if the visitor comes back with the browser's back button */
+window.addEventListener("pageshow", function () { submitBtn.disabled = false; submitBtn.textContent = "Request my free estimate"; });
+</script>
+</body>
+</html>
